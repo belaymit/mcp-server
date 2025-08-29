@@ -1,0 +1,75 @@
+# MCP Proxy Server Configuration - Production Example
+# This configuration is optimized for production deployment
+
+servers:
+  github:
+    url: "${GITHUB_MCP_URL:-http://github-mcp:8001}"
+    timeout: 60
+    maxRetries: 5
+    healthCheckPath: "/health"
+  
+  filesystem:
+    url: "${FILESYSTEM_MCP_URL:-http://filesystem-mcp:8002}"
+    timeout: 30
+    maxRetries: 3
+    healthCheckPath: "/health"
+  
+  gdrive:
+    url: "${GDRIVE_MCP_URL:-http://gdrive-mcp:8003}"
+    timeout: 90
+    maxRetries: 5
+    healthCheckPath: "/health"
+  
+  atlassian:
+    url: "${ATLASSIAN_MCP_URL:-http://atlassian-mcp:8004}"
+    timeout: 60
+    maxRetries: 3
+    healthCheckPath: "/health"
+
+routing:
+  strategy: "prefix"
+  rules:
+    "github": "github"
+    "gh": "github"
+    "git": "github"
+    
+    "filesystem": "filesystem"
+    "fs": "filesystem"
+    "file": "filesystem"
+    "files": "filesystem"
+    
+    "gdrive": "gdrive"
+    "drive": "gdrive"
+    "google": "gdrive"
+    "gd": "gdrive"
+    
+    "atlassian": "atlassian"
+    "jira": "atlassian"
+    "confluence": "atlassian"
+    "atl": "atlassian"
+  
+  defaultServer: "filesystem"
+
+llm:
+  provider: "${LLM_PROVIDER:-openai}"
+  api_key: "${LLM_API_KEY}"
+  base_url: "${LLM_BASE_URL}"
+  model: "${LLM_MODEL:-gpt-4}"
+  temperature: 0.7
+  max_tokens: 4000
+
+ui:
+  enabled: "${UI_ENABLED:-true}"
+  port: "${UI_PORT:-3000}"
+  theme: "${UI_THEME:-light}"
+  max_conversation_history: 200
+  allowed_servers: ["github", "filesystem", "gdrive", "atlassian"]
+
+logging:
+  level: "${LOG_LEVEL:-INFO}"
+  format: "json"
+  file: "${LOG_FILE:-/var/log/mcp-proxy/proxy.log}"
+
+server:
+  port: "${PROXY_PORT:-8000}"
+  host: "${PROXY_HOST:-0.0.0.0}"

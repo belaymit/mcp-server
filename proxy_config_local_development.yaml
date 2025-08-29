@@ -1,0 +1,66 @@
+# MCP Proxy Server Configuration - Local Development
+# This configuration is optimized for local development and testing
+
+servers:
+  github:
+    url: "http://localhost:8001"
+    timeout: 10
+    maxRetries: 1
+    healthCheckPath: "/health"
+  
+  filesystem:
+    url: "http://localhost:8002"
+    timeout: 5
+    maxRetries: 1
+    healthCheckPath: "/health"
+  
+  gdrive:
+    url: "http://localhost:8003"
+    timeout: 15
+    maxRetries: 2
+    healthCheckPath: "/health"
+  
+  atlassian:
+    url: "http://localhost:8004"
+    timeout: 10
+    maxRetries: 1
+    healthCheckPath: "/health"
+
+routing:
+  strategy: "prefix"
+  rules:
+    "github": "github"
+    "gh": "github"
+    
+    "filesystem": "filesystem"
+    "fs": "filesystem"
+    
+    "gdrive": "gdrive"
+    "drive": "gdrive"
+    
+    "atlassian": "atlassian"
+    "jira": "atlassian"
+  
+  defaultServer: "filesystem"
+
+llm:
+  provider: "openai"
+  api_key: "sk-test-key-for-development"
+  model: "gpt-3.5-turbo"
+  temperature: 0.8
+  max_tokens: 2000
+
+ui:
+  enabled: true
+  port: 3000
+  theme: "light"
+  max_conversation_history: 50
+
+logging:
+  level: "DEBUG"
+  format: "text"
+  # No log file - output to console for development
+
+server:
+  port: 8000
+  host: "127.0.0.1"

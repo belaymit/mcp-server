@@ -1,0 +1,111 @@
+# MCP Proxy Server Configuration
+# This file configures the MCP proxy server to route requests to downstream MCP servers
+
+# Downstream MCP server configurations
+servers:
+  github:
+    url: "http://localhost:8001"
+    timeout: 30
+    maxRetries: 3
+    healthCheckPath: "/health"
+  
+  filesystem:
+    url: "http://localhost:8002"
+    timeout: 15
+    maxRetries: 2
+    healthCheckPath: "/health"
+  
+  gdrive:
+    url: "http://localhost:8003"
+    timeout: 45
+    maxRetries: 3
+    healthCheckPath: "/health"
+  
+  atlassian:
+    url: "http://localhost:8004"
+    timeout: 30
+    maxRetries: 3
+    healthCheckPath: "/health"
+
+# Routing configuration
+routing:
+  # Strategy: "prefix" for path-based routing, "header" for header-based routing
+  strategy: "prefix"
+  
+  # Routing rules mapping routing keys to server names
+  rules:
+    # GitHub server routes
+    "github": "github"
+    "gh": "github"
+    
+    # Filesystem server routes
+    "filesystem": "filesystem"
+    "fs": "filesystem"
+    "file": "filesystem"
+    
+    # Google Drive server routes
+    "gdrive": "gdrive"
+    "drive": "gdrive"
+    "google": "gdrive"
+    
+    # Atlassian server routes
+    "atlassian": "atlassian"
+    "jira": "atlassian"
+    "confluence": "atlassian"
+  
+  # Default server to use when no routing rule matches (optional)
+  defaultServer: "filesystem"
+
+# LLM integration configuration (for web UI)
+llm:
+  # Provider: "openai", "anthropic", "gemini", or "local"
+  provider: "openai"
+  
+  # API key (use environment variable for security)
+  api_key: "${OPENAI_API_KEY}"
+  
+  # Base URL for custom endpoints (optional)
+  # base_url: "https://api.openai.com/v1"
+  
+  # Model to use
+  model: "gpt-4"
+  
+  # Generation parameters
+  temperature: 0.7
+  max_tokens: 4000
+
+# Web UI configuration
+ui:
+  # Enable/disable web UI
+  enabled: true
+  
+  # Port for web UI server
+  port: 3000
+  
+  # UI theme
+  theme: "light"
+  
+  # Maximum conversation history to keep
+  max_conversation_history: 100
+  
+  # Restrict UI access to specific servers (optional)
+  allowed_servers: ["github", "filesystem", "gdrive", "atlassian"]
+
+# Logging configuration
+logging:
+  # Log level: DEBUG, INFO, WARNING, ERROR, CRITICAL
+  level: "INFO"
+  
+  # Log format: "json" or "text"
+  format: "json"
+  
+  # Log file path (optional, logs to console if not specified)
+  # file: "proxy.log"
+
+# Main server configuration
+server:
+  # Port for the proxy server
+  port: 8000
+  
+  # Host to bind to
+  host: "0.0.0.0"

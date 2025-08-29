@@ -1,0 +1,63 @@
+# MCP Proxy Server Configuration - Header-based Routing Example
+# This configuration uses the X-Target-MCP header to route requests
+
+servers:
+  github:
+    url: "http://localhost:8001"
+    timeout: 30
+    maxRetries: 3
+    healthCheckPath: "/health"
+  
+  filesystem:
+    url: "http://localhost:8002"
+    timeout: 15
+    maxRetries: 2
+    healthCheckPath: "/health"
+  
+  gdrive:
+    url: "http://localhost:8003"
+    timeout: 45
+    maxRetries: 3
+    healthCheckPath: "/health"
+  
+  atlassian:
+    url: "http://localhost:8004"
+    timeout: 30
+    maxRetries: 3
+    healthCheckPath: "/health"
+
+routing:
+  # Use header-based routing
+  strategy: "header"
+  
+  # Header values mapped to server names
+  rules:
+    "github": "github"
+    "filesystem": "filesystem"
+    "gdrive": "gdrive"
+    "atlassian": "atlassian"
+  
+  # No default server for header routing - requests must include proper header
+  # defaultServer: null
+
+llm:
+  provider: "anthropic"
+  api_key: "${ANTHROPIC_API_KEY}"
+  model: "claude-3-sonnet-20240229"
+  temperature: 0.5
+  max_tokens: 8000
+
+ui:
+  enabled: true
+  port: 3000
+  theme: "dark"
+  max_conversation_history: 50
+
+logging:
+  level: "DEBUG"
+  format: "text"
+  file: "proxy_debug.log"
+
+server:
+  port: 8000
+  host: "127.0.0.1"
