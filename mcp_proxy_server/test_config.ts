@@ -22,6 +22,8 @@ async function testConfigurationValidationErrors() {
       routing: { strategy: "prefix", rules: {} },
       logging: { level: "INFO", format: "json" },
       server: { port: 8000, host: "0.0.0.0" },
+      llm: { provider: "openai", model: "gpt-4", temperature: 0.7, max_tokens: 4000 },
+      ui: { enabled: true, port: 3000, theme: "light", max_conversation_history: 100 }
     };
     configManager.validateConfig(invalidConfig);
     return false;
@@ -36,6 +38,8 @@ async function testConfigurationValidationErrors() {
       routing: { strategy: "invalid" as any, rules: {} },
       logging: { level: "INFO", format: "json" },
       server: { port: 8000, host: "0.0.0.0" },
+      llm: { provider: "openai", model: "gpt-4", temperature: 0.7, max_tokens: 4000 },
+      ui: { enabled: true, port: 3000, theme: "light", max_conversation_history: 100 }
     };
     configManager.validateConfig(invalidConfig);
     return false;
@@ -50,6 +54,8 @@ async function testConfigurationValidationErrors() {
       routing: { strategy: "prefix", rules: { github: "nonexistent" } },
       logging: { level: "INFO", format: "json" },
       server: { port: 8000, host: "0.0.0.0" },
+      llm: { provider: "openai", model: "gpt-4", temperature: 0.7, max_tokens: 4000 },
+      ui: { enabled: true, port: 3000, theme: "light", max_conversation_history: 100 }
     };
     configManager.validateConfig(invalidConfig);
     return false;

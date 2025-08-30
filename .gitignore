@@ -121,7 +121,7 @@ test_web_ui.js
 test_mcp_servers.js
 
 # Mock data and temporary files
-mock_knowledge_base/
+
 temp-config-*/
 
 # Kiro IDE specific files (exclude all)
